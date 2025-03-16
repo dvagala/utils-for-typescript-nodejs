@@ -1,0 +1,65 @@
+.DS_Store
+
+screenshots/
+
+
+lib-cov
+*.seed
+*.log
+*.csv
+*.dat
+*.out
+*.pid
+*.gz
+*.swp
+
+pids
+logs
+results
+tmp
+
+# Build
+public/css/main.css
+
+# Coverage reports
+coverage
+
+# API keys and secrets
+.env
+
+# Dependency directory
+node_modules
+bower_components
+
+# Editors
+.idea
+*.iml
+
+Thumbs.db
+
+# Ignore built ts files
+dist/**/*
+
+# ignore yarn.lock
+yarn.lock
+
+
+
+credentials.json
+
+credentials_backup.json
+
+dev_events.json
+
+dev_event_ids.json
+
+cache
+backups
+
+tmp_files/
+assets/gcp-hapsy-billing-management-service-key.json
+
+
+
+# OS metadata
+.DS_Store
