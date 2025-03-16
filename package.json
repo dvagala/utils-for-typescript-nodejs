@@ -1,6 +1,6 @@
 {
   "name": "@dvagala/ts-nodejs-utils",
-  "version": "1.0.31",
+  "version": "1.0.32",
   "description": "Dominik's custom utils",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
