@@ -1,12 +1,15 @@
 {
-  "name": "dominiks-ts-nodejs-utils",
-  "version": "1.0.0",
-  "description": "A collection of utility functions",
+  "name": "@dvagala/ts-nodejs-utils",
+  "version": "1.0.21",
+  "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "postinstall": "npm run build"
+    "build_and_start": "pnpm build && pnpm start",
+    "start": "node --enable-source-maps dist/index.js",
+    "build_and_publish": "pnpm git_commit_all && npm version patch && pnpm build && pnpm publish --no-git-checks",
+    "git_commit_all": "git add . && git commit -am \"update\""
   },
   "dependencies": {},
   "devDependencies": {
@@ -14,8 +17,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dvagala/dominiks-ts-nodejs-utils"
+    "url": "https://github.com/dvagala/ts-nodejs-utils"
   },
   "author": "dvagala",
-  "license": "MIT"
+  "license": "MIT",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/dvagala"
+  }
 }
