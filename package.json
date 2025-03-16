@@ -1,5 +1,5 @@
 {
-  "name": "dominiks-ts-nodejs-utils",
+  "name": "@dvagala/dominiks-ts-nodejs-utils",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
@@ -8,14 +8,14 @@
     "build": "swc src -d dist",
     "build_and_start": "pnpm build && pnpm start",
     "start": "node --enable-source-maps dist/src/index.js",
-    "prepublishOnly": "pnpm build"
+    "publish": "pnpm publish"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dvagala/dominiks-ts-nodejs-utils.git"
+    "url": "https://github.com/dvagala/dominiks-ts-nodejs-utils"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com/dvagala"
   },
   "keywords": [],
   "author": "",
