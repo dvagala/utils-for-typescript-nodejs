@@ -5,9 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "swc src -d dist",
+    "build": "tsc",
     "build_and_start": "pnpm build && pnpm start",
-    "start": "node --enable-source-maps dist/src/index.js",
+    "start": "node --enable-source-maps dist/index.js",
     "publish": "pnpm publish"
   },
   "repository": {

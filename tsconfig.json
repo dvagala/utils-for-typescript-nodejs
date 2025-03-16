@@ -2,9 +2,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "module": "CommonJS",
-    "target": "ES2020",
-    "declaration": true,
-    "strict": true
+    "target": "ES6",
+    "declaration": true
   },
   "include": ["src"]
 }
