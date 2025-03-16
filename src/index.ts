@@ -1,1 +1,3 @@
-export * from './mathFunctions.js';
+export * from './functions.js';
+export * from './parallel_section.js';
+export * from './extensions.js';
