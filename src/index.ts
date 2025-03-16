@@ -1,3 +1,1 @@
-function foo() {
-  console.log('Hello from utils!');
-}
+export * from './mathFunctions.js';
