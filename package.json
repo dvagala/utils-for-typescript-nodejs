@@ -1,8 +1,12 @@
 {
   "name": "@dvagala/utils",
-  "version": "1.0.53",
+  "version": "1.0.52",
   "description": "Dominik's custom utils for Typescript NodeJS",
   "main": "dist/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
