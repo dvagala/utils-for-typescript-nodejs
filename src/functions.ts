@@ -837,3 +837,13 @@ export async function fetchWithTimeout(options: {
     agent: options.proxy,
   });
 }
+
+export function parseNullableNuber(maybeNumber: string | null | undefined): number | null | undefined {
+  if (maybeNumber === null) {
+    return null;
+  } else if (maybeNumber === undefined) {
+    return undefined;
+  } else {
+    return Number.parseInt(maybeNumber);
+  }
+}
