@@ -1,6 +1,7 @@
 import { Agent } from 'http';
 import fetch, { Response } from 'node-fetch';
 import { waitFor } from './wait_utils';
+import { jsonPrettyStringify } from './json_utils';
 
 export interface PrintOptions {
   ignoreTruncation?: boolean;
