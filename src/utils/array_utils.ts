@@ -97,6 +97,14 @@ export function onlyDefinedValues<T>(value: T | undefined): value is T {
   }
 }
 
+export function onlyNonNullAndDefinedValues<T>(value: T | undefined | null): value is T {
+  if (value === null || value === undefined) {
+    return false;
+  } else {
+    return true;
+  }
+}
+
 export function removeDuplicates<T>(inputArray: T[]): T[] {
   // rather to use .removeDuplicates because you can specify the predicate
   return [...new Set(inputArray)];
