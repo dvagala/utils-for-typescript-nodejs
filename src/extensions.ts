@@ -25,6 +25,8 @@ declare global {
 
     isNotEmpty(): boolean;
 
+    firstOrNullIfEmpty(): T | null;
+
     firstWhereOrNull(predicate: (value: T) => boolean): T | null;
 
     findIndexOrNull(predicate: (value: T) => boolean): number | null;
@@ -187,6 +189,12 @@ if (!Array.prototype.isEmpty) {
 if (!Array.prototype.isNotEmpty) {
   Array.prototype.isNotEmpty = function (): boolean {
     return this.length > 0;
+  };
+}
+
+if (!Array.prototype.firstOrNullIfEmpty) {
+  Array.prototype.firstOrNullIfEmpty = function <T>(): T | null {
+    return this.isEmpty() ? null : this[0];
   };
 }
 
