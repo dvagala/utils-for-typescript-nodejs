@@ -1,5 +1,5 @@
-import { ParallelSection } from './parallel_section';
-import { getRandomFromList } from './functions';
+import { ParallelSection } from './models/parallel_section';
+import { getRandomFromList } from './utils/misc_utils';
 
 export {};
 
@@ -7,10 +7,7 @@ export {};
 
 declare global {
   interface Array<T> {
-    // filter<T, S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];
-    // filterAsync<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S): Promise<S[]>;
     filterAsync<S extends T>(predicate: (value: T, index: number, array: T[]) => Promise<boolean>): Promise<S[]>;
-    // filterAsync(predicate: (value: T, index: number, array: T[]) => Promise<boolean>): Promise<R[]>;
 
     filterAsyncParallel<S extends T>(predicate: (value: T, index: number, array: T[]) => Promise<boolean>): Promise<S[]>;
 

@@ -1,5 +1,5 @@
 import { Mutex, Semaphore } from 'async-mutex';
-import { NonFunctionProperties, print, removeFromArray } from './functions';
+import { NonFunctionProperties, print, removeFromArray } from '../utils/misc_utils';
 
 export interface RunnableItem<T> {
   // This is to running the same item twice
