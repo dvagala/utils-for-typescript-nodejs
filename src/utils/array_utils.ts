@@ -24,6 +24,15 @@ export function forN<T>(n: number, fn: (i: number) => T): T[] {
   return results;
 }
 
+export async function forNAsync<T>(n: number, fn: (i: number) => Promise<T>): Promise<T[]> {
+  const results: T[] = [];
+  for (let i = 0; i < n; i++) {
+    results.push(await fn(i));
+  }
+
+  return results;
+}
+
 export function getRandomFromList<E>(list: E[]): E {
   return list[Math.floor(Math.random() * list.length)];
 }
