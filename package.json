@@ -1,7 +1,7 @@
 {
-  "name": "@dvagala/ts-nodejs-utils",
+  "name": "@dvagala/utils",
   "version": "1.0.46",
-  "description": "Dominik's custom utils",
+  "description": "Dominik's custom utils for Typescript NodeJS",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -14,7 +14,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/dvagala/ts-nodejs-utils"
+    "url": "https://github.com/dvagala/utils-for-typescript-nodejs"
   },
   "author": "dvagala",
   "license": "MIT",
