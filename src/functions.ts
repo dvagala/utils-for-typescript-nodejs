@@ -4,6 +4,8 @@ import { DateTime } from 'luxon';
 import { distance } from 'fastest-levenshtein';
 import { longestCommonSubstring } from 'string-algorithms';
 import { Mutex } from 'async-mutex';
+import { Agent } from 'http';
+import fetch, { RequestInfo, RequestInit, Response } from 'node-fetch';
 
 export interface PrintOptions {
   ignoreTruncation?: boolean;
@@ -821,4 +823,17 @@ export function extractJSONSSurroundedByJunkText(str: string): any[] {
   }
 
   return results;
+}
+
+export async function fetchWithTimeout(options: {
+  url: string;
+  timeoutMs: number;
+  customHeders?: { [key: string]: string } | undefined;
+  proxy?: Agent | undefined;
+}): Promise<Response> {
+  return await fetch(options.url, {
+    signal: AbortSignal.timeout(options.timeoutMs),
+    headers: options.customHeders,
+    agent: options.proxy,
+  });
 }
