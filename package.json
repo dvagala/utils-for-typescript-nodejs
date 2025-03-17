@@ -9,7 +9,6 @@
     "build_and_start": "pnpm build && pnpm start",
     "start": "node --enable-source-maps dist/index.js",
     "build_and_publish": "pnpm git_commit_all && npm version patch && pnpm build && pnpm publish --no-git-checks",
-    "postinstall": "npm run build",
     "git_commit_all": "git add . && git diff-index --quiet HEAD || git commit -am \"modify some code\""
   },
   "repository": {
