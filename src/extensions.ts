@@ -1,5 +1,5 @@
 import { ParallelSection } from './models/parallel_section';
-import { getRandomFromList } from './utils/misc_utils';
+import { getRandomFromList } from './utils/array_utils';
 
 export {};
 
