@@ -3,9 +3,9 @@ import { getRandomFromList } from './functions';
 
 export {};
 
-declare global {
-  // Not that it seems you cannot make extensions on type Object. The playwright make errors afterwards
+// Not that it seems you cannot make extensions on type Object. The playwright make errors afterwards
 
+declare global {
   interface Array<T> {
     // filter<T, S extends T>(predicate: (value: T, index: number, array: T[]) => value is S, thisArg?: any): S[];
     // filterAsync<S extends T>(predicate: (value: T, index: number, array: T[]) => value is S): Promise<S[]>;
