@@ -39,6 +39,8 @@ declare global {
 
     sortFromHighestToLowest(predicate: (value: T) => number): T[];
 
+    sortByPrefferedValues(prefferedValuesOrder: T[]): T[];
+
     getHighestElement(predicate: (value: T) => number): T | null;
 
     getLowestElement(predicate: (value: T) => number): T | null;
@@ -373,6 +375,24 @@ if (!Array.prototype.takeEveryNth) {
       }
     }
     return result;
+  };
+}
+
+if (!Array.prototype.sortByPrefferedValues) {
+  Array.prototype.sortByPrefferedValues = function <T>(prefferedValuesOrder: T[]): T[] {
+    const prefferedValuesActuallyInTheArray = prefferedValuesOrder.filter((value) => this.includes(value));
+
+    return (this as T[]).sort((a, b) => {
+      if (prefferedValuesActuallyInTheArray.includes(a) && prefferedValuesActuallyInTheArray.includes(b)) {
+        return prefferedValuesOrder.indexOf(a) - prefferedValuesOrder.indexOf(b);
+      } else if (prefferedValuesActuallyInTheArray.includes(a) && !prefferedValuesActuallyInTheArray.includes(b)) {
+        return -1;
+      } else if (prefferedValuesActuallyInTheArray.includes(a) && !prefferedValuesActuallyInTheArray.includes(b)) {
+        return 1;
+      } else {
+        return 0;
+      }
+    });
   };
 }
 
