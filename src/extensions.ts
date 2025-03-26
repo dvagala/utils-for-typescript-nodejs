@@ -1,3 +1,5 @@
+import { Duration } from 'luxon';
+import { DevStopwatch } from './models/dev_stopwatch';
 import { ParallelSection } from './models/parallel_section';
 import { getRandomFromList } from './utils/array_utils';
 
@@ -140,9 +142,13 @@ if (!Array.prototype.forEachAsyncParallelWithLimit) {
   Array.prototype.forEachAsyncParallelWithLimit = async function <T>(options: {
     limit: number;
     fn: (value: T, index: number, array: T[]) => Promise<void>;
+    printProgress?: boolean;
+    customPrintTag?: string;
   }): Promise<void> {
     const paralellSection = new ParallelSection(options.limit, false);
     paralellSection.initializeQueue();
+
+    const d = new DevStopwatch();
 
     const array = this as T[];
     for (let i = 0; i < array.length; i++) {
@@ -151,6 +157,14 @@ if (!Array.prototype.forEachAsyncParallelWithLimit) {
         groupKey: '',
         item: i.toString(),
         codeToRun: async () => {
+          if (options.printProgress == true) {
+            console.log(
+              `Progress${options.customPrintTag != null ? ` (${options.customPrintTag}) ` : ''}: ${i}/${array.length} (time remaining ${
+                i == 0 ? 'NaN' : Duration.fromMillis((d.elapsedMs() / i) * (array.length - i - 1)).toFormat('hh:mm:ss')
+              })`
+            );
+          }
+
           await options.fn(array[i], i, array);
         },
       });
