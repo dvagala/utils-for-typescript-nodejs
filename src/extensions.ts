@@ -21,7 +21,12 @@ declare global {
 
     forEachAsyncSequential<U>(callbackfn: (value: T, index: number, array: T[]) => Promise<void>): Promise<void>;
 
-    forEachAsyncParallelWithLimit<U>(options: { limit: number; fn: (value: T, index: number, array: T[]) => Promise<void> }): Promise<void>;
+    forEachAsyncParallelWithLimit<U>(options: {
+      limit: number;
+      fn: (value: T, index: number, array: T[]) => Promise<void>;
+      printProgress?: boolean;
+      customPrintTag?: string;
+    }): Promise<void>;
 
     isEmpty(): boolean;
 
