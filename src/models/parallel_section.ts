@@ -1,7 +1,5 @@
+import { NonFunctionProperties, print, removeFromArray } from '@dvagala/utils';
 import { Mutex, Semaphore } from 'async-mutex';
-import { print } from '../utils/misc_utils';
-import { removeFromArray } from '../utils/array_utils';
-import { NonFunctionProperties } from './non_function_properties';
 
 export interface RunnableItem<T> {
   // This is to running the same item twice
@@ -51,7 +49,7 @@ export class ParallelSection<T> {
     return items;
   }
 
-  public async addToQueueAndRunLater(itemToAddToQueue: RunnableItem<T>): Promise<void> {
+  public addToQueueAndRunLater(itemsToAddToQueue: RunnableItem<T>[]): void {
     if (this.queueIsClosed) {
       print(`Cannot add to queue, because it's already closed. This shouldn't regularely happen`);
       return;
@@ -61,36 +59,49 @@ export class ParallelSection<T> {
       (async () => {
         await this.mutex.acquire();
 
-        if (this.queue.map((e) => e.key).includes(itemToAddToQueue.key) || this.currentlyRunning.map((e) => e.key).includes(itemToAddToQueue.key)) {
+        const keysInQueue = this.queue.map((e) => e.key);
+        const keysInCurrentlyRunning = this.currentlyRunning.map((e) => e.key);
+
+        itemsToAddToQueue = itemsToAddToQueue
+          .removeDuplictes((e) => e.key)
+          .filter((e) => !keysInQueue.includes(e.key) && !keysInCurrentlyRunning.includes(e.key));
+
+        if (itemsToAddToQueue.isEmpty()) {
           // No need to add to queue and run, because the given `key` is already there.
           this.mutex.release();
           return;
         }
 
-        this.queue.push(itemToAddToQueue);
-        await itemToAddToQueue.onItemAddedToQueue?.();
+        this.queue.push(...itemsToAddToQueue);
+
+        for await (const item of itemsToAddToQueue) {
+          await item.onItemAddedToQueue?.();
+        }
         this.mutex.release();
 
-        const [_, semaphoreReleaseFn] = await this.semaphore.acquire();
+        for await (let itemToExecute of itemsToAddToQueue) {
+          const [_, semaphoreReleaseFn] = await this.semaphore.acquire();
 
-        await this.mutex.acquire();
-        const itemToExecute = this.mixOrderExecutionAcrossGroups
-          ? this.getItemFromGroupThatWasntRunnedRecently(this.queue, this.runningItemsHistory)
-          : itemToAddToQueue;
-        this.queue = removeFromArray(this.queue, itemToExecute);
-        this.currentlyRunning.push(itemToExecute);
-        this.runningItemsHistory.push(itemToExecute);
-        this.mutex.release();
-
-        try {
-          await itemToExecute.onItemStartedExecuting?.();
-          await itemToExecute.codeToRun();
-        } finally {
           await this.mutex.acquire();
-          this.currentlyRunning = removeFromArray(this.currentlyRunning, itemToExecute);
+
+          itemToExecute = this.mixOrderExecutionAcrossGroups
+            ? this.getItemFromGroupThatWasntRunnedRecently(this.queue, this.runningItemsHistory)
+            : itemToExecute;
+          this.queue = removeFromArray(this.queue, itemToExecute);
+          this.currentlyRunning.push(itemToExecute);
+          this.runningItemsHistory.push(itemToExecute);
           this.mutex.release();
 
-          semaphoreReleaseFn();
+          try {
+            await itemToExecute.onItemStartedExecuting?.();
+            await itemToExecute.codeToRun();
+          } finally {
+            await this.mutex.acquire();
+            this.currentlyRunning = removeFromArray(this.currentlyRunning, itemToExecute);
+            this.mutex.release();
+
+            semaphoreReleaseFn();
+          }
         }
       })()
     );

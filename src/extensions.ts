@@ -1,7 +1,7 @@
 import { Duration } from 'luxon';
 import { DevStopwatch } from './models/dev_stopwatch';
 import { ParallelSection } from './models/parallel_section';
-import { getRandomFromList } from './utils/array_utils';
+import { forN, getRandomFromList } from './utils/array_utils';
 
 export {};
 
@@ -156,8 +156,10 @@ if (!Array.prototype.forEachAsyncParallelWithLimit) {
     const d = new DevStopwatch();
 
     const array = this as T[];
-    for (let i = 0; i < array.length; i++) {
-      await paralellSection.addToQueueAndRunLater({
+    const iArray = forN(array.length, (i) => i);
+
+    paralellSection.addToQueueAndRunLater(
+      iArray.map((i) => ({
         key: i.toString(),
         groupKey: '',
         item: i.toString(),
@@ -172,8 +174,9 @@ if (!Array.prototype.forEachAsyncParallelWithLimit) {
 
           await options.fn(array[i], i, array);
         },
-      });
-    }
+      }))
+    );
+    for (let i = 0; i < array.length; i++) {}
 
     await paralellSection.waitForAllItemsInQueueExecutedAndCloseQueue();
   };
