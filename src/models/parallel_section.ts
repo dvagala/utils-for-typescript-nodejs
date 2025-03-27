@@ -1,5 +1,7 @@
-import { NonFunctionProperties, print, removeFromArray } from '@dvagala/utils';
 import { Mutex, Semaphore } from 'async-mutex';
+import { print } from '../utils/misc_utils';
+import { removeFromArray } from '../utils/array_utils';
+import { NonFunctionProperties } from './non_function_properties';
 
 export interface RunnableItem<T> {
   // This is to running the same item twice
