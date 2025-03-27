@@ -81,7 +81,7 @@ export class ParallelSection<T> {
         }
         this.mutex.release();
 
-        for await (let itemToExecute of itemsToAddToQueue) {
+        await itemsToAddToQueue.forEachAsync(async (itemToExecute) => {
           const [_, semaphoreReleaseFn] = await this.semaphore.acquire();
 
           await this.mutex.acquire();
@@ -104,7 +104,7 @@ export class ParallelSection<T> {
 
             semaphoreReleaseFn();
           }
-        }
+        });
       })()
     );
   }
