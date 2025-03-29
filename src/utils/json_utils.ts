@@ -75,30 +75,36 @@ function getFirstNestedObjectByKey(json: any, targetKey: string): any | null | u
 
 export function getFirstObjectInJsonThatMatchesHierarchyKeys(json: any, targetKeys: string[]): any | null | undefined {
   // E.g.:
-  // Json structure: [key0, key1, key2, key3, key4]
+  // Json structure:[key0, key2, key1, key2, key3, key4]
   // TargetKeys: [key2, key3] <- the keys must be direct parent/child chain
-  //
-  // !! Be aware that in json structure [key2, key1, key2, key3, key4] this approach will fail. To fix this it would need
-  // quite a complicated refactor.
+  // Returned: the object they found path's key3 is pointing to
 
-  let currentJson: any | null | undefined = undefined;
+  return traverseJsonAndFindObject({
+    json: json,
+    matcher: (parentObject, currentChildKey) => {
+      // We found the 'key2'.
+      if (currentChildKey === targetKeys[0]) {
+        let currentJson = parentObject;
+        // Now we need to find if the whole path exisits. If not, it's not the right one, and we will try more.
+        for (let i = 0; i < targetKeys.length; i++) {
+          currentJson = currentJson[targetKeys[i]];
 
-  for (let i = 0; i < targetKeys.length; i++) {
-    if (i == 0) {
-      currentJson = getFirstNestedObjectByKey(json, targetKeys[0]);
-    } else {
-      currentJson = currentJson[targetKeys[i]];
-    }
+          // There's no need to traverse the tree if we found null or undefined
+          // We allow the actual object we're trying to find to be null.
+          if (currentJson === null && i === targetKeys.length - 1) {
+            return null;
+            // When the object while traversing is null or some key doesn't even exist, we already know the path won't be this one
+          } else if (currentJson === null || currentJson === undefined) {
+            return undefined;
+          }
+        }
 
-    // There's no need to traverse the tree if we found null or undefined
-    if (currentJson === null) {
-      return null;
-    } else if (currentJson === undefined) {
+        return currentJson;
+      }
+
       return undefined;
-    }
-  }
-
-  return currentJson;
+    },
+  });
 }
 
 export function getFirstObjectInJsonsThatMatchHierarchyKeys(jsons: any[], targetKeys: string[]): any | null | undefined {
