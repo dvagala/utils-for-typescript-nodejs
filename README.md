@@ -9,3 +9,4 @@ If you get `401 User cannot be authenticated with the token provided.` Most like
 1. Go to https://github.com/settings/tokens and click on regenarete that token.
 2. Run `npm login --registry=https://npm.pkg.github.com`. And user `dvagala` as username and that new token as password
 3. Go to all projects that use this utils and to their .npmrc add new token
+   so for hapsy that means in my macbook, but also on server
