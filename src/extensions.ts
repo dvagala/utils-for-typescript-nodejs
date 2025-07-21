@@ -496,7 +496,7 @@ if (!String.prototype.isNotEmpty) {
 
 if (!String.prototype.limitToNChars) {
   String.prototype.limitToNChars = function (n: number): string {
-    return this.length > n ? this.substring(0, n) + '...' : (this as string);
+    return this.length > n ? this.substring(0, n) : (this as string);
   };
 }
 
